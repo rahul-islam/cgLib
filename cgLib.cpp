@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <cgLib.h>
 
+float degToRad(float deg) {
+  return float(deg * 3.14)/ 180.0;
+}
+
 void drawLine(float _x1,float _y1,float _x2, float _y2) {
   float x1,x2,y1,y2;
   x1=_x1,y1=_y1;
@@ -41,6 +45,54 @@ void drawLine(float _x1,float _y1,float _x2, float _y2) {
     printf("%f\n",yi-floor(yi));
     putpixel(x,floor(yi)+1,yi-floor(yi)+1);
     yi = yi + m;
+  }
+
+}
+
+void drawCircle(float _xc, float _yc, float _r) {
+  /*
+  _xc = x-coordinate of the center of the circle
+  _yc = y-coordinated of the center of the circle
+  _r = radius of the circle
+  */
+
+  /* code */
+  float r = _r;
+  float xc = _xc, yc = _yc;
+
+  putpixel(floor(xc+0.5),floor(yc+r+0.5),4);
+  putpixel(floor(xc+0.5),floor(yc-r+0.5),4);
+  putpixel(floor(xc+r+0.5),floor(yc+0.5),4);
+  putpixel(floor(xc-r+0.5),floor(yc+0.5),4);
+
+  float theta = 1;
+  float a0 = 1.0/r;
+  float x,y;
+  for(theta = 1; theta <= 45; theta++) {
+    x = r * cos(degToRad(theta));
+    y = r * sin(degToRad(theta));
+
+    putpixel(floor(xc+x+0.5),floor(yc+y+0.5),4);
+    putpixel(floor(xc+x+0.5),floor(yc-y+0.5),4);
+    putpixel(floor(xc-x+0.5),floor(yc+y+0.5),4);
+    putpixel(floor(xc-x+0.5),floor(yc-y+0.5),4);
+    putpixel(floor(xc+y+0.5),floor(yc+x+0.5),4);
+    putpixel(floor(xc+y+0.5),floor(yc-x+0.5),4);
+    putpixel(floor(xc-y+0.5),floor(yc+x+0.5),4);
+    putpixel(floor(xc-y+0.5),floor(yc-x+0.5),4);
+
+    theta = theta + a0;
+
+    if(theta == 45) {
+      x = r * cos(degToRad(theta));
+      y = r * cos(degToRad(theta));
+
+      putpixel(floor(xc+x+0.5),floor(yc+y+0.5),4);
+      putpixel(floor(xc+x+0.5),floor(yc-y+0.5),4);
+      putpixel(floor(xc-x+0.5),floor(yc+y+0.5),4);
+      putpixel(floor(xc-x+0.5),floor(yc-y+0.5),4);
+    }
+
   }
 
 }
