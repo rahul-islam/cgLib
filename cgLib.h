@@ -34,4 +34,24 @@ void mid_eci(float xc,float yc, float rx, float ry);
 
 void mid_line(float x1, float y1,float x2, float y2);
 
+
+
+void _4_Connected_fill_flood(int,int,int);
+
+void _4_Connected_fill_boundary(int,int,int);
+
+void _8_Connected_fill_flood(int,int,int);
+
+void _8_Connected_fill_boundary(int,int,int);
+
+void lineDrawMidPoint(int,int,int,int,int,int,int);
+
+void lineDrawDDA(int,int,int,int);
+
+void translation(int,int,int*,int*,int*,int*);
+
+void rotation(float,int,int,int*,int*,int*,int*);
+
+void scale(int,int,int,int,int*,int*,int*,int*);
+
 #endif

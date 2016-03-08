@@ -750,3 +750,228 @@ void mid_line(float x1, float y1,float x2, float y2){
   delay(10000);
   closegraph();
 }
+
+
+
+
+
+
+void _4_Connected_fill_boundary(int fx,int fy,int color){
+    if(getpixel(fx,fy)== BLACK )
+    {
+        putpixel(fx,fy,color);
+        _4_Connected_fill_boundary(fx+1,fy,color);
+        _4_Connected_fill_boundary(fx-1,fy,color);
+        _4_Connected_fill_boundary(fx,fy+1,color);
+        _4_Connected_fill_boundary(fx,fy-1,color);
+    }
+}
+
+void _4_Connected_fill_flood(int fx,int fy,int color){
+    if(getpixel(fx,fy)!= color && getpixel(fx,fy)!= WHITE)
+    {
+        putpixel(fx,fy,color);
+        _4_Connected_fill_flood(fx+1,fy,color);
+        _4_Connected_fill_flood(fx-1,fy,color);
+        _4_Connected_fill_flood(fx,fy+1,color);
+        _4_Connected_fill_flood(fx,fy-1,color);
+    }
+}
+
+void _8_Connected_fill_flood(int fx,int fy,int color){
+    if(getpixel(fx,fy)!= color && getpixel(fx,fy)!= WHITE)
+    {
+        putpixel(fx,fy,color);
+        _8_Connected_fill_flood(fx+1,fy,color);
+        _8_Connected_fill_flood(fx-1,fy,color);
+        _8_Connected_fill_flood(fx,fy+1,color);
+        _8_Connected_fill_flood(fx,fy-1,color);
+        _8_Connected_fill_flood(fx+1,fy+1,color);
+        _8_Connected_fill_flood(fx-1,fy+1,color);
+        _8_Connected_fill_flood(fx+1,fy-1,color);
+        _8_Connected_fill_flood(fx-1,fy-1,color);
+    }
+}
+
+void _8_Connected_fill_boundary(int fx,int fy,int color){
+    if(getpixel(fx,fy)== BLACK )
+    {
+        putpixel(fx,fy,color);
+        _8_Connected_fill_boundary(fx+1,fy,color);
+        _8_Connected_fill_boundary(fx-1,fy,color);
+        _8_Connected_fill_boundary(fx,fy+1,color);
+        _8_Connected_fill_boundary(fx,fy-1,color);
+        _8_Connected_fill_boundary(fx+1,fy+1,color);
+        _8_Connected_fill_boundary(fx-1,fy+1,color);
+        _8_Connected_fill_boundary(fx+1,fy-1,color);
+        _8_Connected_fill_boundary(fx-1,fy-1,color);
+    }
+}
+
+void lineDrawMidPoint(int x1,int y1,int x2,int y2,int x0,int y0,int color){
+    int y3,k;
+    if(x1>=x2)
+    {
+        int temp1,temp2;
+        temp1=x1;
+        x1=x2;
+        x2=temp1;
+        temp2=y1;
+        y1=y2;
+        y2=temp2;
+    }
+    float xdel=x2-x1;
+    float ydel=y2-y1;
+    x1=x0+x1;
+    x2=x0+x2;
+    y1=y0-y1;
+    y2=y0-y2;
+
+    int p[500],x[500],y[500];
+    x[0]=x1;
+    y[0]=y1;
+
+    float m=(ydel/xdel);
+    putpixel(x1,y1,color);
+
+    if( m <=1 && m>0)
+    {
+        p[0]=(-0.5*xdel-ydel);
+        for(k=0; k<xdel; k++)
+        {
+            if(p[k]<0)
+            {
+                y3=y[k]+1-y[0];
+                putpixel(x[k]+1,y[k]+1-2*y3,color);
+                x[k+1]=x[k]+1;
+                y[k+1]=y[k]+1;
+                p[k+1]=p[k]+xdel-ydel;
+            }
+            else
+            {
+                y3=y[k]-y[0];
+                putpixel(x[k]+1,y[k]-2*y3,color);
+                x[k+1]=x[k]+1;
+                y[k+1]=y[k];
+                p[k+1]=p[k]-ydel;
+            }
+
+        }
+    }
+
+
+    else if(m>=-1 && m<=0)
+    {
+        p[0]=(-0.5*xdel-ydel);
+        for(k=0; k<xdel; k++)
+        {
+            if(p[k]<0)
+            {
+                y3=y[k]-y[0];
+                putpixel(x[k]+1,y[k]-2*y3,color);
+                x[k+1]=x[k]+1;
+                y[k+1]=y[k];
+                p[k+1]=p[k]-ydel;
+            }
+            else
+            {
+                y3=y[k]-1-y[0];
+                putpixel(x[k]+1,y[k]-1-2*y3,color);
+                x[k+1]=x[k]+1;
+                y[k+1]=y[k]-1;
+                p[k+1]=p[k]-xdel-ydel;
+            }
+
+        }
+    }
+    else if(m>1)
+    {
+        p[0]=(xdel-(ydel*0.5));
+
+        for(k=0; k<ydel; k++)
+        {
+            if(p[k]<0)
+            {
+                y3=y[k]+1-y[0];
+                putpixel(x[k],y[k]+1-2*y3,color);
+                x[k+1]=x[k];
+                y[k+1]=y[k]+1;
+                p[k+1]=p[k]+xdel;
+            }
+            else
+            {
+                y3=y[k]+1-y[0];
+                putpixel(x[k]+1,y[k]+1-2*y3,color);
+                x[k+1]=x[k]+1;
+                y[k+1]=y[k]+1;
+                p[k+1]=p[k]+xdel-ydel;
+            }
+
+        }
+    }
+    else if(m<-1)
+    {
+        p[0]=(-xdel-(ydel*0.5));
+
+        for(k=0; k<(-1)*ydel; k++)
+        {
+            if(p[k]<0)
+            {
+                y3=y[k]-1-y[0];
+                putpixel(x[k]+1,y[k]-1-2*y3,color);
+                x[k+1]=x[k]+1;
+                y[k+1]=y[k]-1;
+                p[k+1]=p[k]-xdel-ydel;
+            }
+            else
+            {
+                y3=y[k]-1-y[0];
+                putpixel(x[k],y[k]-1-2*y3,color);
+                x[k+1]=x[k];
+                y[k+1]=y[k]-1;
+                p[k+1]=p[k]-xdel;
+            }
+
+        }
+    }
+}
+
+void translation(int tx,int ty,int *x1,int *y1,int *x2,int *y2){
+    *x1=*x1+tx;
+    *x2=*x2+tx;
+    *y1=*y1+ty;
+    *y2=*y2+ty;
+}
+
+void rotation(float theta,int xr,int yr,int *x1,int *y1,int *x2,int *y2){
+    theta = to_radian(theta);
+    int xx1,xx2,yy1,yy2;
+    xx1 = xr + (float)(((*x1)-xr)*cos(theta))-(float)(((*y1)-yr)*sin(theta));
+    yy1 = yr + (float)(((*x1)-xr)*sin(theta))+(float)(((*y1)-yr)*cos(theta));
+    xx2 = xr + (float)(((*x2)-xr)*cos(theta))-(float)(((*y2)-yr)*sin(theta));
+    yy2 = yr + (float)(((*x2)-xr)*sin(theta))+(float)(((*y2)-yr)*cos(theta));
+    *x1 = xx1;
+    *x2 = xx2;
+    *y1 = yy1;
+    *y2 = yy2;
+}
+
+void scale(int sx,int sy,int xf,int yf,int *x1,int *y1,int *x2,int *y2){
+    int xx1,xx2,yy1,yy2;
+    xx1 = sx*(*x1) + (1-sx)*xf;
+    xx2 = sx*(*x2) + (1-sx)*xf;
+    yy1 = sx*(*y1) + (1-sy)*xf;
+    yy2 = sx*(*y2) + (1-sy)*xf;
+    *x1 = xx1;
+    *x2 = xx2;
+    *y1 = yy1;
+    *y2 = yy2;
+}
+
+void shear(int shx,int shy,int *x1,int *y1,int *x2,int *y2){
+    *x1=*x1+*y1*shx;
+    *x2=*x2+*y2*shx;
+    *y1=*y1+*x1*shy;
+    *y2=*y2+*x2*shy;
+    cout<<"sAS";
+}
